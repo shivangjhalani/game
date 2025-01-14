@@ -1,0 +1,15 @@
+.ellipse {
+    opacity: 0.6;
+    mix-blend-mode: difference;
+    pointer-events: none;
+    filter: blur(1px);
+  }
+  
+  .animate-rotate, .animate-rotate-reverse {
+    will-change: transform;
+  }
+  
+  .animate-counter-rotate, .animate-counter-rotate-reverse {
+    will-change: transform;
+    backface-visibility: hidden;
+  }
