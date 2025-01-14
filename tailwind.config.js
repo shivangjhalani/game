@@ -7,10 +7,6 @@ export default {
   theme: {
     extend: {
       animation: {
-        'rotate': 'rotate linear infinite',
-        'rotate-reverse': 'rotate-reverse linear infinite',
-        'counter-rotate': 'counter-rotate linear infinite',
-        'counter-rotate-reverse': 'counter-rotate-reverse linear infinite',
       },
       borderRadius: {
         lg: 'var(--radius)',

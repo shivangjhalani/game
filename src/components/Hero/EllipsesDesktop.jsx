@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
 import ellipse1 from '../../assets/images/ellipsis-d1.svg';
 import ellipse2 from '../../assets/images/ellipsis-d2.svg';
 import ellipse3 from '../../assets/images/ellipsis-d3.svg';
@@ -8,61 +9,91 @@ import ellipse6 from '../../assets/images/ellipsis-d6.svg';
 import iconPlaceholder from '../../assets/icons/7bab58c9ec21860becbae1d9eff8eb6ca5dd8c6a-61x61.png';
 
 const EllipsesDesktop = () => {
+  const containerRef = useRef(null);
   const ellipses = [
     { 
       src: ellipse1, 
-      size: '478px', 
+      size: 478, 
       duration: 20, 
-      direction: 'normal',
+      direction: 1,
       icons: Array.from({ length: 4 }, (_, i) => ({ angle: (i * 90) }))
     },
     { 
       src: ellipse2, 
-      size: '666px', 
+      size: 666, 
       duration: 25, 
-      direction: 'reverse',
+      direction: -1,
       icons: Array.from({ length: 4 }, (_, i) => ({ angle: (i * 90) }))
     },
     { 
       src: ellipse3, 
-      size: '856px', 
+      size: 856, 
       duration: 30, 
-      direction: 'normal',
+      direction: 1,
       icons: Array.from({ length: 4 }, (_, i) => ({ angle: (i * 90) }))
     },
     { 
       src: ellipse4, 
-      size: '1070px', 
+      size: 1070, 
       duration: 35, 
-      direction: 'reverse',
+      direction: -1,
       icons: Array.from({ length: 4 }, (_, i) => ({ angle: (i * 90) }))
     },
     { 
       src: ellipse5, 
-      size: '1286px', 
+      size: 1286, 
       duration: 40, 
-      direction: 'normal',
+      direction: 1,
       icons: Array.from({ length: 4 }, (_, i) => ({ angle: (i * 90) }))
     },
     { 
       src: ellipse6, 
-      size: '1489px', 
+      size: 1489, 
       duration: 45, 
-      direction: 'reverse',
+      direction: -1,
       icons: Array.from({ length: 4 }, (_, i) => ({ angle: (i * 90) }))
     },
   ];
 
+  useEffect(() => {
+    const container = containerRef.current;
+    const ellipseElements = container.children;
+    
+    ellipses.forEach((config, index) => {
+      const ellipseWrapper = ellipseElements[index];
+      const icons = Array.from(ellipseWrapper.querySelectorAll('.icon-wrapper'));
+      
+      // Rotate the ellipse
+      gsap.to(ellipseWrapper, {
+        rotation: config.direction * 360,
+        duration: config.duration,
+        repeat: -1,
+        ease: "none"
+      });
+
+      // Counter-rotate each icon
+      icons.forEach((icon, iconIndex) => {
+        gsap.to(icon, {
+          rotation: -config.direction * 360,
+          duration: config.duration,
+          repeat: -1,
+          ease: "none"
+        });
+      });
+    });
+
+    return () => gsap.killTweensOf(container.children);
+  }, []);
+
   return (
-    <div className="absolute inset-0 flex items-center justify-center">
+    <div ref={containerRef} className="absolute inset-0 flex items-center justify-center">
       {ellipses.map((ellipse, index) => (
         <div
           key={index}
-          className={`absolute ${ellipse.direction === 'normal' ? 'animate-rotate' : 'animate-rotate-reverse'}`}
+          className="absolute"
           style={{
-            width: ellipse.size,
-            height: ellipse.size,
-            animationDuration: `${ellipse.duration}s`,
+            width: `${ellipse.size}px`,
+            height: `${ellipse.size}px`,
           }}
         >
           <img
@@ -72,28 +103,21 @@ const EllipsesDesktop = () => {
           />
           
           {ellipse.icons.map((icon, iconIndex) => {
-            const radius = parseInt(ellipse.size) / 2;
+            const radius = ellipse.size / 2;
             const angleInRadians = (icon.angle * Math.PI) / 180;
-            
-            // Calculate position on the ellipse
             const x = radius * Math.cos(angleInRadians);
             const y = radius * Math.sin(angleInRadians);
 
             return (
               <div
                 key={iconIndex}
-                className="absolute transition-transform"
+                className="icon-wrapper absolute"
                 style={{
                   width: '61px',
                   height: '61px',
                   top: '50%',
                   left: '50%',
-                  transform: `
-                    translate(-50%, -50%)
-                    translate(${x}px, ${y}px)
-                    rotate(${ellipse.direction === 'normal' ? -icon.angle : icon.angle}deg)
-                  `,
-                  animation: `${ellipse.direction === 'normal' ? 'counter-rotate' : 'counter-rotate-reverse'} ${ellipse.duration}s linear infinite`
+                  transform: `translate(${x - 30.5}px, ${y - 30.5}px)`
                 }}
               >
                 <img
