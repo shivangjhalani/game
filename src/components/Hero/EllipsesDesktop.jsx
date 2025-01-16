@@ -29,7 +29,7 @@ const EllipsesDesktop = () => {
   const ellipses = [
     { 
       src: ellipse1, 
-      size: 500,
+      size: 600,
       duration: 20, 
       direction: 1,
       offset: 30,
@@ -41,7 +41,7 @@ const EllipsesDesktop = () => {
     },
     { 
       src: ellipse2, 
-      size: 800,
+      size: 820,
       duration: 25, 
       direction: -1,
       offset: 15,
@@ -55,7 +55,7 @@ const EllipsesDesktop = () => {
     },
     { 
       src: ellipse3, 
-      size: 1100,
+      size: 1040,
       duration: 30, 
       direction: 1,
       offset: 45,
@@ -69,7 +69,7 @@ const EllipsesDesktop = () => {
     },
     { 
       src: ellipse4, 
-      size: 1400,
+      size: 1260,
       duration: 35, 
       direction: -1,
       offset: 20,
@@ -84,7 +84,7 @@ const EllipsesDesktop = () => {
     },
     { 
       src: ellipse5, 
-      size: 1700,
+      size: 1480,
       duration: 40, 
       direction: 1,
       offset: 35,
@@ -100,7 +100,7 @@ const EllipsesDesktop = () => {
     },
     { 
       src: ellipse6, 
-      size: 2000,
+      size: 1700,
       duration: 45, 
       direction: -1,
       offset: 25,
@@ -197,4 +197,4 @@ const EllipsesDesktop = () => {
   );
 };
 
-export default EllipsesDesktop; 
+export default EllipsesDesktop;

@@ -16,16 +16,15 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-black overflow-x-hidden">
-      <div className="absolute inset-0" style={{ 
-        width: isMobile ? '120vw' : '150vw',
-        height: isMobile ? '120vh' : '150vh',
-        left: isMobile ? '-10vw' : '-25vw',
-        top: isMobile ? '-10vh' : '-25vh'
-      }}>
+    <div className="absolute inset-0">
+      <div 
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" 
+        style={{ 
+          width: isMobile ? '120vw' : '130vw',
+          height: isMobile ? '120vh' : '130vh',
+        }}
+      >
         {isMobile ? <EllipsesMobile /> : <EllipsesDesktop />}
-      </div>
-      <div className="relative z-10 container mx-auto px-4 py-20 flex flex-col items-center justify-center min-h-screen text-center">
       </div>
     </div>
   );
