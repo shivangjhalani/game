@@ -11,17 +11,24 @@ export const TextHoverEffect = ({
   const [hovered, setHovered] = useState(false);
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
-  // Split text into array if it's a string, or use as is if it's already an array
   const textLines = Array.isArray(text) ? text : [text];
-  const lineHeight = 60; // Reduced from 80 to 60
+  const lineHeight = 60; // Reduced line height
   const totalHeight = lineHeight * textLines.length;
   const baseY = 50 - ((textLines.length - 1) * lineHeight) / 2;
+
+  const handleMouseMove = (e) => {
+    if (!svgRef.current) return;
+    const svgRect = svgRef.current.getBoundingClientRect();
+    const x = e.clientX - svgRect.left;
+    const y = e.clientY - svgRect.top;
+    setCursor({ x, y });
+  };
 
   useEffect(() => {
     if (svgRef.current && cursor.x !== null && cursor.y !== null) {
       const svgRect = svgRef.current.getBoundingClientRect();
-      const cxPercentage = ((cursor.x - svgRect.left) / svgRect.width) * 100;
-      const cyPercentage = ((cursor.y - svgRect.top) / svgRect.height) * 100;
+      const cxPercentage = (cursor.x / svgRect.width) * 100;
+      const cyPercentage = (cursor.y / svgRect.height) * 100;
       setMaskPosition({
         cx: `${cxPercentage}%`,
         cy: `${cyPercentage}%`,
@@ -37,30 +44,36 @@ export const TextHoverEffect = ({
       viewBox={`0 0 300 ${Math.max(100, totalHeight)}`}
       xmlns="http://www.w3.org/2000/svg"
       onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onMouseMove={(e) => setCursor({ x: e.clientX, y: e.clientY })}
+      onMouseLeave={() => {
+        setHovered(false);
+        setCursor({ x: 0, y: 0 });
+      }}
+      onMouseMove={handleMouseMove}
+      style={{ touchAction: 'none' }}
       className="select-none">
       <defs>
-        <linearGradient
+        <radialGradient
           id="textGradient"
-          gradientUnits="userSpaceOnUse"
           cx="50%"
           cy="50%"
-          r="25%">
+          r="50%"
+          fx="50%"
+          fy="50%">
           {hovered && (
             <>
-              <stop offset="0%" stopColor={"var(--yellow-500)"} />
-              <stop offset="25%" stopColor={"var(--red-500)"} />
-              <stop offset="50%" stopColor={"var(--blue-500)"} />
-              <stop offset="75%" stopColor={"var(--cyan-500)"} />
-              <stop offset="100%" stopColor={"var(--violet-500)"} />
+              <stop offset="0%" stopColor="#FFD700" />
+              <stop offset="25%" stopColor="#FF6B6B" />
+              <stop offset="50%" stopColor="#4169E1" />
+              <stop offset="75%" stopColor="#00CED1" />
+              <stop offset="100%" stopColor="#9370DB" />
             </>
           )}
-        </linearGradient>
+        </radialGradient>
 
         <motion.radialGradient
           id="revealMask"
-          gradientUnits="userSpaceOnUse"
+          cx="50%"
+          cy="50%"
           r="20%"
           animate={maskPosition}
           transition={{ duration: duration ?? 0, ease: "easeOut" }}>
@@ -83,7 +96,7 @@ export const TextHoverEffect = ({
               dominantBaseline="middle"
               strokeWidth="0.3"
               className="font-[helvetica] font-bold stroke-neutral-200 dark:stroke-neutral-800 fill-transparent text-7xl"
-              style={{ opacity: hovered ? 0.7 : 0 }}>
+              style={{ opacity: hovered ? 0.7 : 0, vectorEffect: 'non-scaling-stroke' }}>
               {line}
             </text>
             <motion.text
@@ -93,6 +106,7 @@ export const TextHoverEffect = ({
               dominantBaseline="middle"
               strokeWidth="0.3"
               className="font-[helvetica] font-bold fill-transparent text-7xl stroke-neutral-200 dark:stroke-neutral-800"
+              style={{ vectorEffect: 'non-scaling-stroke' }}
               initial={{ strokeDashoffset: 1000, strokeDasharray: 1000 }}
               animate={{
                 strokeDashoffset: 0,
@@ -112,6 +126,7 @@ export const TextHoverEffect = ({
               stroke="url(#textGradient)"
               strokeWidth="0.3"
               mask="url(#textMask)"
+              style={{ vectorEffect: 'non-scaling-stroke' }}
               className="font-[helvetica] font-bold fill-transparent text-7xl">
               {line}
             </text>
