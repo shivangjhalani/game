@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import EllipsesDesktop from './EllipsesDesktop';
 import EllipsesMobile from './EllipsesMobile';
+import { TextHoverEffect } from './text-hover-effect';
 
 const Hero = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -25,6 +26,12 @@ const Hero = () => {
         }}
       >
         {isMobile ? <EllipsesMobile /> : <EllipsesDesktop />}
+      </div>
+      
+      <div className="absolute inset-0 flex items-center justify-center z-10">
+        <div className="w-[600px] h-[300px]">
+          <TextHoverEffect text={['Game', 'Cube']} duration={0.1} />
+        </div>
       </div>
     </div>
   );
