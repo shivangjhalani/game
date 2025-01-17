@@ -1,14 +1,18 @@
 import Hero from './components/Hero/Hero'
+import GradientSection from './components/GradientSection/GradientSection'
 
 function App() {
   return (
     <div className="overflow-hidden w-full relative">
-      <main>
-        <section className="h-screen relative">
+      <main className="relative">
+        <section className="relative z-10">
           <Hero />
         </section>
-        <div className="h-[200vh]">
-          {/* Your other content goes here */}
+        <section className="relative z-20 -mt-32">
+          <GradientSection />
+        </section>
+        <div className="relative z-30 bg-black h-[200vh]">
+          {/* Your next section content */}
         </div>
       </main>
     </div>

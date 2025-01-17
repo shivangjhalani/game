@@ -16,12 +16,12 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="absolute inset-0">
+    <div className={`relative w-full ${isMobile ? 'min-h-fit py-64' : 'h-screen'}`}>
       <div 
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" 
+        className={`${isMobile ? 'relative' : 'absolute'} left-1/2 -translate-x-1/2 ${isMobile ? '' : '-translate-y-[15vh]'}`}
         style={{ 
-          width: isMobile ? '120vw' : '130vw',
-          height: isMobile ? '120vh' : '130vh',
+          width: isMobile ? '100vw' : '130vw',
+          height: isMobile ? 'auto' : '130vh',
         }}
       >
         {isMobile ? <EllipsesMobile /> : <EllipsesDesktop />}

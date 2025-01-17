@@ -73,6 +73,19 @@ export default {
           '100%': { transform: 'translate(-50%, -50%) rotate(0deg)' },
         },
       },
+      fontSize: {
+        'fluid-sm': 'clamp(0.875rem, 0.8rem + 0.375vw, 1rem)',
+        'fluid-base': 'clamp(1rem, 0.925rem + 0.375vw, 1.125rem)',
+        'fluid-lg': 'clamp(1.125rem, 1rem + 0.625vw, 1.375rem)',
+        'fluid-xl': 'clamp(1.25rem, 1.125rem + 0.625vw, 1.5rem)',
+        'fluid-2xl': 'clamp(1.5rem, 1.375rem + 0.625vw, 1.875rem)',
+        'fluid-3xl': 'clamp(1.875rem, 1.75rem + 0.625vw, 2.25rem)',
+      },
+      spacing: {
+        'fluid-sm': 'clamp(1rem, 0.925rem + 0.375vw, 1.5rem)',
+        'fluid-base': 'clamp(1.5rem, 1.375rem + 0.625vw, 2.5rem)',
+        'fluid-lg': 'clamp(2rem, 1.875rem + 0.625vw, 3rem)',
+      }
     }
   },
   plugins: [
