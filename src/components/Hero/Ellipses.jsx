@@ -12,7 +12,6 @@ const Ellipses = ({ startAnimation }) => {
     const ellipseWrapper = container.children[index];
     const icons = Array.from(ellipseWrapper.querySelectorAll('.icon-wrapper'));
     
-    // Continuous rotations with easeNone
     gsap.to(ellipseWrapper, {
       rotation: config.direction * 360,
       duration: config.duration,
@@ -21,7 +20,6 @@ const Ellipses = ({ startAnimation }) => {
       immediateRender: true
     });
 
-    // Counter rotation for icons
     icons.forEach(icon => {
       gsap.to(icon, {
         rotation: -config.direction * 360,
@@ -33,7 +31,6 @@ const Ellipses = ({ startAnimation }) => {
       });
     });
 
-    // Ripple effect entrance animation
     masterTl
       .fromTo(ellipseWrapper, 
         {
@@ -47,7 +44,7 @@ const Ellipses = ({ startAnimation }) => {
           ease: "power3.out",
           immediateRender: true
         }, 
-        index * 0.15 // Increased stagger time for more pronounced ripple effect
+        index * 0.15
       )
       .fromTo(icons,
         {
@@ -62,7 +59,7 @@ const Ellipses = ({ startAnimation }) => {
           stagger: 0.05,
           immediateRender: true
         },
-        `<0.4` // Start slightly after the ellipse animation begins
+        "<0.4"
       );
   };
 
@@ -70,7 +67,6 @@ const Ellipses = ({ startAnimation }) => {
     if (!startAnimation) {
       const container = containerRef.current;
       if (container) {
-        // Set initial states
         gsap.set(container.querySelectorAll('.ellipse-wrapper'), {
           opacity: 0,
           scale: 0.8,
@@ -108,61 +104,73 @@ const Ellipses = ({ startAnimation }) => {
     };
   }, [startAnimation, ellipses]);
 
+  const calculateIconPosition = (angle, radius, iconSize) => {
+    const angleInRadians = (angle * Math.PI) / 180;
+    const x = radius * Math.cos(angleInRadians);
+    const y = radius * Math.sin(angleInRadians);
+    const offset = iconSize / 2;
+
+    return {
+      x: x - offset,
+      y: y - offset
+    };
+  };
+
   return (
     <div ref={containerRef} className="absolute inset-0 flex items-center justify-center">
-      {ellipses.map((ellipse, index) => (
-        <div
-          key={index}
-          className="absolute ellipse-wrapper"
-          style={{
-            width: `${ellipse.size}px`,
-            height: `${ellipse.size}px`,
-            opacity: 0,
-            visibility: 'visible'
-          }}
-        >
-          <img
-            src={ellipse.src}
-            alt={`Ellipse ${index + 1}`}
-            className="w-full h-full ellipse"
-          />
-          
-          {ellipse.icons.map((icon, iconIndex) => {
-            const radius = ellipse.size / 2;
-            const angleInRadians = (icon.angle * Math.PI) / 180;
-            const x = radius * Math.cos(angleInRadians);
-            const y = radius * Math.sin(angleInRadians);
-            const iconSize = isMobile ? 40 : 35;
-            const offset = iconSize / 2;
+      {ellipses.map((ellipse, index) => {
+        const radius = ellipse.size / 2;
+        const iconSize = isMobile ? 40 : 35;
 
-            return (
-              <div
-                key={iconIndex}
-                className="icon-wrapper absolute"
-                style={{
-                  width: `${iconSize}px`,
-                  height: `${iconSize}px`,
-                  top: '50%',
-                  left: '50%',
-                  transform: `translate(${x - offset}px, ${y - offset}px)`,
-                  transformOrigin: 'center center',
-                  opacity: 0,
-                  visibility: 'visible',
-                  zIndex: 10,
-                  willChange: 'transform, opacity'
-                }}
-              >
-                <img
-                  src={icon.src}
-                  alt={`Icon ${iconIndex + 1}`}
-                  className="w-full h-full"
-                  style={{ pointerEvents: 'none' }}
-                />
-              </div>
-            );
-          })}
-        </div>
-      ))}
+        return (
+          <div
+            key={index}
+            className="absolute ellipse-wrapper"
+            style={{
+              width: `${ellipse.size}px`,
+              height: `${ellipse.size}px`,
+              opacity: 0,
+              visibility: 'visible'
+            }}
+          >
+            <img
+              src={ellipse.src}
+              alt={`Ellipse ${index + 1}`}
+              className="w-full h-full ellipse"
+            />
+            
+            {ellipse.icons.map((icon, iconIndex) => {
+              const { x, y } = calculateIconPosition(icon.angle, radius, iconSize);
+
+              return (
+                <div
+                  key={iconIndex}
+                  className="icon-wrapper absolute"
+                  style={{
+                    width: `${iconSize}px`,
+                    height: `${iconSize}px`,
+                    top: '50%',
+                    left: '50%',
+                    transform: `translate(${x}px, ${y}px)`,
+                    transformOrigin: 'center center',
+                    opacity: 0,
+                    visibility: 'visible',
+                    zIndex: 10,
+                    willChange: 'transform, opacity'
+                  }}
+                >
+                  <img
+                    src={icon.src}
+                    alt={`Icon ${iconIndex + 1}`}
+                    className="w-full h-full"
+                    style={{ pointerEvents: 'none' }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
     </div>
   );
 };

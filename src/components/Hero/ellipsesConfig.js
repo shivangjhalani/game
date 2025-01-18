@@ -38,7 +38,7 @@ export const getEllipsesConfig = (isMobile) => {
     return [
       { 
         src: ellipse1Mobile, 
-        size: 420,
+        size: 320,
         duration: 20, 
         direction: 1,
         offset: 30,
@@ -46,7 +46,7 @@ export const getEllipsesConfig = (isMobile) => {
       },
       { 
         src: ellipse2Mobile, 
-        size: 560,
+        size: 460,
         duration: 25, 
         direction: -1,
         offset: 45,
@@ -59,7 +59,7 @@ export const getEllipsesConfig = (isMobile) => {
       },
       { 
         src: ellipse3Mobile, 
-        size: 700,
+        size: 600,
         duration: 30, 
         direction: 1,
         offset: 15,
