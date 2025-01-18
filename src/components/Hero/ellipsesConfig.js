@@ -1,5 +1,3 @@
-import { useEffect, useRef, useMemo } from 'react';
-import gsap from 'gsap';
 import ellipse1 from '../../assets/images/ellipsis-d1.svg';
 import ellipse2 from '../../assets/images/ellipsis-d2.svg';
 import ellipse3 from '../../assets/images/ellipsis-d3.svg';
@@ -7,7 +5,7 @@ import ellipse4 from '../../assets/images/ellipsis-d4.svg';
 import ellipse5 from '../../assets/images/ellipsis-d5.svg';
 import ellipse6 from '../../assets/images/ellipsis-d6.svg';
 
-// Import icons
+// Desktop icons
 import icon1 from '../../assets/icons/0261f74a0018ae68ace667e12adaa1f1b6071b75-61x61.png';
 import icon2 from '../../assets/icons/30abc8b689aa5d011379367d8e6f8873ff5f3e46-61x61.png';
 import icon3 from '../../assets/icons/6078c7a174c289c130a7bbf47048f42455e2a59b-61x61.png';
@@ -24,9 +22,57 @@ import icon13 from '../../assets/icons/cbe7c9ebb37062468d76cc51b5734a6429d59074-
 import icon14 from '../../assets/icons/dbde5604dfa254389c43acb85a97f03561b4210c-61x61.png';
 import icon15 from '../../assets/icons/de7ef99de23fcaf90b724af99a557ae849d573cf-61x61.png';
 
-const EllipsesDesktop = ({ startAnimation }) => {
-  const containerRef = useRef(null);
-  const ellipses = useMemo(() => [
+// Mobile ellipses
+import ellipse1Mobile from '../../assets/images/ellipsis-m1.svg';
+import ellipse2Mobile from '../../assets/images/ellipsis-m2.svg';
+import ellipse3Mobile from '../../assets/images/ellipsis-m3.svg';
+
+// Mobile icons
+import icon1Mobile from '../../assets/icons/0261f74a0018ae68ace667e12adaa1f1b6071b75-61x61.png';
+import icon2Mobile from '../../assets/icons/30abc8b689aa5d011379367d8e6f8873ff5f3e46-61x61.png';
+import icon3Mobile from '../../assets/icons/6078c7a174c289c130a7bbf47048f42455e2a59b-61x61.png';
+import icon4Mobile from '../../assets/icons/69dc8d3b9ec4e14cb106c1b594aef0a318f3e992-61x61.png';
+
+export const getEllipsesConfig = (isMobile) => {
+  if (isMobile) {
+    return [
+      { 
+        src: ellipse1Mobile, 
+        size: 420,
+        duration: 20, 
+        direction: 1,
+        offset: 30,
+        icons: [] // No icons on first ellipse
+      },
+      { 
+        src: ellipse2Mobile, 
+        size: 560,
+        duration: 25, 
+        direction: -1,
+        offset: 45,
+        icons: [
+          { src: icon1Mobile, angle: 45 },
+          { src: icon2Mobile, angle: 135 },
+          { src: icon3Mobile, angle: 225 },
+          { src: icon4Mobile, angle: 315 }
+        ]
+      },
+      { 
+        src: ellipse3Mobile, 
+        size: 700,
+        duration: 30, 
+        direction: 1,
+        offset: 15,
+        icons: [
+          { src: icon1Mobile, angle: 60 },
+          { src: icon2Mobile, angle: 180 },
+          { src: icon3Mobile, angle: 300 }
+        ]
+      }
+    ];
+  }
+  
+  return [
     { 
       src: ellipse1, 
       size: 600,
@@ -115,108 +161,5 @@ const EllipsesDesktop = ({ startAnimation }) => {
         { src: icon4, angle: 340 }
       ]
     }
-  ], []);
-
-  useEffect(() => {
-    if (!startAnimation) {
-      // Initial state
-      const container = containerRef.current;
-      if (container) {
-        gsap.set(['.ellipse-wrapper', '.icon-wrapper'], {
-          opacity: 0,
-          scale: 0.7
-        });
-      }
-      return;
-    }
-    
-    const container = containerRef.current;
-    const masterTl = gsap.timeline({
-      defaults: { ease: "power2.out" }
-    });
-
-    ellipses.forEach((config, index) => {
-      const ellipseWrapper = container.children[index];
-      const icons = Array.from(ellipseWrapper.querySelectorAll('.icon-wrapper'));
-      
-      // Start continuous rotations
-      gsap.to(ellipseWrapper, {
-        rotation: config.direction * 360,
-        duration: config.duration,
-        repeat: -1,
-        ease: "none"
-      });
-
-      icons.forEach(icon => {
-        gsap.to(icon, {
-          rotation: -config.direction * 360,
-          duration: config.duration,
-          repeat: -1,
-          ease: "none",
-          transformOrigin: "center center"
-        });
-      });
-
-      // Fade in timeline
-      masterTl.to([ellipseWrapper, icons], {
-        opacity: 1,
-        scale: 1,
-        duration: 0.5,
-        stagger: 0.04
-      }, index * 0.04);
-    });
-
-    return () => masterTl.kill();
-  }, [startAnimation]);
-
-  return (
-    <div ref={containerRef} className="absolute inset-0 flex items-center justify-center">
-      {ellipses.map((ellipse, index) => (
-        <div
-          key={index}
-          className="absolute ellipse-wrapper"
-          style={{
-            width: `${ellipse.size}px`,
-            height: `${ellipse.size}px`,
-          }}
-        >
-          <img
-            src={ellipse.src}
-            alt={`Ellipse ${index + 1}`}
-            className="w-full h-full ellipse"
-          />
-          
-          {ellipse.icons.map((icon, iconIndex) => {
-            const radius = ellipse.size / 2;
-            const angleInRadians = (icon.angle * Math.PI) / 180;
-            const x = radius * Math.cos(angleInRadians);
-            const y = radius * Math.sin(angleInRadians);
-
-            return (
-              <div
-                key={iconIndex}
-                className="icon-wrapper absolute"
-                style={{
-                  width: '35px',
-                  height: '35px',
-                  top: '50%',
-                  left: '50%',
-                  transform: `translate(${x - 17.5}px, ${y - 17.5}px)`,
-                  transformOrigin: 'center center'
-                }}
-              >
-                <img
-                  src={icon.src}
-                  alt={`Icon ${iconIndex + 1}`}
-                  className="w-full h-full"
-                />
-              </div>
-            );
-          })}
-        </div>
-      ))}
-    </div>
-  );
+  ];
 };
-
-export default EllipsesDesktop;

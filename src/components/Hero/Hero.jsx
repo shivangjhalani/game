@@ -1,31 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { debounce } from 'lodash';
-import EllipsesDesktop from './EllipsesDesktop';
-import EllipsesMobile from './EllipsesMobile';
+import { useResponsive } from '@/hooks/useResponsive';
+import Ellipses from './Ellipses';
 import { TextHoverEffect } from './text-hover-effect';
 
 const Hero = () => {
-  const [isMobile, setIsMobile] = useState(null);
+  const { isMobile } = useResponsive();
   const [textAnimationComplete, setTextAnimationComplete] = useState(false);
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-    
-    const handleResize = debounce(() => {
-      setIsMobile(window.innerWidth < 768);
-    }, 100);
-
-    window.addEventListener('resize', handleResize);
-    return () => {
-      handleResize.cancel();
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  if (isMobile === null) {
-    return null;
-  }
 
   return (
     <div className={`relative w-full ${isMobile ? 'min-h-fit py-64' : 'h-screen'}`}>
@@ -49,11 +30,7 @@ const Hero = () => {
         initial="initial"
         animate="animate"
       >
-        {isMobile ? (
-          <EllipsesMobile startAnimation={textAnimationComplete} />
-        ) : (
-          <EllipsesDesktop startAnimation={textAnimationComplete} />
-        )}
+        <Ellipses startAnimation={textAnimationComplete} />
       </motion.div>
     </div>
   );
