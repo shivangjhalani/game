@@ -8,7 +8,6 @@ export const TextHoverEffect = ({
 }) => {
   const svgRef = useRef(null);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
-  const [hovered, setHovered] = useState(false);
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
   const textLines = Array.isArray(text) ? text : [text];
@@ -43,11 +42,6 @@ export const TextHoverEffect = ({
       height="100%"
       viewBox={`0 0 300 ${Math.max(100, totalHeight)}`}
       xmlns="http://www.w3.org/2000/svg"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => {
-        setHovered(false);
-        setCursor({ x: 0, y: 0 });
-      }}
       onMouseMove={handleMouseMove}
       style={{ touchAction: 'none' }}
       className="select-none">
@@ -59,15 +53,11 @@ export const TextHoverEffect = ({
           r="50%"
           fx="50%"
           fy="50%">
-          {hovered && (
-            <>
-              <stop offset="0%" stopColor="#FFD700" />
-              <stop offset="25%" stopColor="#FF6B6B" />
-              <stop offset="50%" stopColor="#4169E1" />
-              <stop offset="75%" stopColor="#00CED1" />
-              <stop offset="100%" stopColor="#9370DB" />
-            </>
-          )}
+          <stop offset="0%" stopColor="#FFD700" />
+          <stop offset="25%" stopColor="#FF6B6B" />
+          <stop offset="50%" stopColor="#4169E1" />
+          <stop offset="75%" stopColor="#00CED1" />
+          <stop offset="100%" stopColor="#9370DB" />
         </radialGradient>
 
         <motion.radialGradient
