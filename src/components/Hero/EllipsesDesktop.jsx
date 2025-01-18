@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import gsap from 'gsap';
 import ellipse1 from '../../assets/images/ellipsis-d1.svg';
 import ellipse2 from '../../assets/images/ellipsis-d2.svg';
@@ -26,7 +26,7 @@ import icon15 from '../../assets/icons/de7ef99de23fcaf90b724af99a557ae849d573cf-
 
 const EllipsesDesktop = ({ startAnimation }) => {
   const containerRef = useRef(null);
-  const ellipses = [
+  const ellipses = useMemo(() => [
     { 
       src: ellipse1, 
       size: 600,
@@ -115,51 +115,31 @@ const EllipsesDesktop = ({ startAnimation }) => {
         { src: icon4, angle: 340 }
       ]
     }
-  ];
+  ], []);
 
   useEffect(() => {
     if (!startAnimation) {
-      // Ensure everything is hidden initially
+      // Initial state
       const container = containerRef.current;
       if (container) {
-        gsap.set(container.querySelectorAll('.ellipse-wrapper'), {
+        gsap.set(['.ellipse-wrapper', '.icon-wrapper'], {
           opacity: 0,
           scale: 0.7
-        });
-        gsap.set(container.querySelectorAll('.icon-wrapper'), {
-          opacity: 0,
-          scale: 0.9
         });
       }
       return;
     }
     
     const container = containerRef.current;
-    const ellipseElements = container.children;
-    
     const masterTl = gsap.timeline({
-      defaults: {
-        ease: "power2.out"
-      }
+      defaults: { ease: "power2.out" }
     });
 
     ellipses.forEach((config, index) => {
-      const ellipseWrapper = ellipseElements[index];
+      const ellipseWrapper = container.children[index];
       const icons = Array.from(ellipseWrapper.querySelectorAll('.icon-wrapper'));
       
-      // Initial state
-      gsap.set(ellipseWrapper, {
-        opacity: 0,
-        scale: 0.7,
-        rotation: 0
-      });
-      
-      gsap.set(icons, {
-        opacity: 0,
-        scale: 0.9
-      });
-
-      // Start rotation immediately
+      // Start continuous rotations
       gsap.to(ellipseWrapper, {
         rotation: config.direction * 360,
         duration: config.duration,
@@ -167,7 +147,7 @@ const EllipsesDesktop = ({ startAnimation }) => {
         ease: "none"
       });
 
-      icons.forEach((icon) => {
+      icons.forEach(icon => {
         gsap.to(icon, {
           rotation: -config.direction * 360,
           duration: config.duration,
@@ -177,30 +157,13 @@ const EllipsesDesktop = ({ startAnimation }) => {
         });
       });
 
-      // Create timeline for fade and scale
-      const ellipseTl = gsap.timeline({
-        delay: index * 0.04
-      });
-
-      // Animate ellipse fade and scale together
-      ellipseTl.to(ellipseWrapper, {
+      // Fade in timeline
+      masterTl.to([ellipseWrapper, icons], {
         opacity: 1,
         scale: 1,
         duration: 0.5,
-        ease: "power2.out"
-      });
-
-      // Animate icons with same timing
-      icons.forEach((icon) => {
-        ellipseTl.to(icon, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.5,
-          ease: "power2.out"
-        }, "<");
-      });
-
-      masterTl.add(ellipseTl, index * 0.04);
+        stagger: 0.04
+      }, index * 0.04);
     });
 
     return () => masterTl.kill();

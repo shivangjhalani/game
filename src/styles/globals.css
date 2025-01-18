@@ -1,6 +1,5 @@
 .ellipse {
   mix-blend-mode: screen;
-  pointer-events: none;
   filter: blur(2px);
 }
 
@@ -8,24 +7,10 @@
   will-change: transform;
   backface-visibility: hidden;
   opacity: 0;
-}
-
-@layer base {
-  html {
-    @apply scroll-smooth;
-  }
-  
-  body {
-    @apply antialiased text-fluid-base;
-  }
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  transform-style: preserve-3d;
 }
 
 .ellipse-wrapper {
   opacity: 0;
+  will-change: transform, opacity;
 }

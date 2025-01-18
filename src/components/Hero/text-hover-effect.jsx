@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { debounce } from 'lodash';
 
 export const TextHoverEffect = ({
   text,
@@ -15,25 +16,24 @@ export const TextHoverEffect = ({
   const totalHeight = lineHeight * textLines.length;
   const baseY = 50 - ((textLines.length - 1) * lineHeight) / 2;
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = debounce((e) => {
     if (!svgRef.current) return;
     const svgRect = svgRef.current.getBoundingClientRect();
     const x = e.clientX - svgRect.left;
     const y = e.clientY - svgRect.top;
-    setCursor({ x, y });
-  };
-
+    
+    const cxPercentage = (x / svgRect.width) * 100;
+    const cyPercentage = (y / svgRect.height) * 100;
+    
+    setMaskPosition({
+      cx: `${cxPercentage}%`,
+      cy: `${cyPercentage}%`,
+    });
+  }, 16); // ~60fps
+  
   useEffect(() => {
-    if (svgRef.current && cursor.x !== null && cursor.y !== null) {
-      const svgRect = svgRef.current.getBoundingClientRect();
-      const cxPercentage = (cursor.x / svgRect.width) * 100;
-      const cyPercentage = (cursor.y / svgRect.height) * 100;
-      setMaskPosition({
-        cx: `${cxPercentage}%`,
-        cy: `${cyPercentage}%`,
-      });
-    }
-  }, [cursor]);
+    return () => handleMouseMove.cancel();
+  }, []);
 
   return (
     <svg
