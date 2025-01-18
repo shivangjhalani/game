@@ -5,21 +5,23 @@ import Navbar from './components/Navbar/Navbar'
 import About from './pages/About'
 import Team from './pages/Team'
 import Events from './pages/Events'
+import TracingBeams from './components/TracingBeams/TracingBeams'
 
 function App() {
   return (
-    <div className="overflow-hidden w-full relative">
+    <main>
       <Navbar />
       <Routes>
         <Route path="/" element={
-          <main className="relative">
-            <section className="relative z-10">
+          <main className="overflow-hidden">
+            <section className="z-10">
               <Hero />
             </section>
             <section className="relative z-20 -mt-32">
               <GradientSection />
             </section>
-            <div className="relative z-30 bg-black h-[200vh]">
+            <TracingBeams />
+            <div className="h-[200vh]">
               {/* Your next section content */}
             </div>
           </main>
@@ -28,7 +30,7 @@ function App() {
         <Route path="/team" element={<Team />} />
         <Route path="/events" element={<Events />} />
       </Routes>
-    </div>
+    </main>
   )
 }
 
