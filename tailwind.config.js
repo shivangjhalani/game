@@ -85,7 +85,10 @@ export default {
         'fluid-sm': 'clamp(1rem, 0.925rem + 0.375vw, 1.5rem)',
         'fluid-base': 'clamp(1.5rem, 1.375rem + 0.625vw, 2.5rem)',
         'fluid-lg': 'clamp(2rem, 1.875rem + 0.625vw, 3rem)',
-      }
+      },
+      fontFamily: {
+        'spektra': ['Spektra', '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'Helvetica', 'sans-serif'],
+      },
     }
   },
   plugins: [

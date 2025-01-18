@@ -61,3 +61,17 @@
     --chart-5: 340 75% 55%;
   }
 }
+
+@font-face {
+  font-family: 'Spektra';
+  src: url('/path/to/spektra-font.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Add these utility classes */
+.font-spektra {
+  font-family: Spektra, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}

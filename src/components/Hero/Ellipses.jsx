@@ -12,7 +12,7 @@ const Ellipses = ({ startAnimation }) => {
     const ellipseWrapper = container.children[index];
     const icons = Array.from(ellipseWrapper.querySelectorAll('.icon-wrapper'));
     
-    // Continuous rotations
+    // Continuous rotations with easeNone
     gsap.to(ellipseWrapper, {
       rotation: config.direction * 360,
       duration: config.duration,
@@ -21,9 +21,8 @@ const Ellipses = ({ startAnimation }) => {
       immediateRender: true
     });
 
-    // Separate icon animations for better control
+    // Counter rotation for icons
     icons.forEach(icon => {
-      // Counter rotation
       gsap.to(icon, {
         rotation: -config.direction * 360,
         duration: config.duration,
@@ -34,38 +33,54 @@ const Ellipses = ({ startAnimation }) => {
       });
     });
 
-    // Fade in both ellipse and icons separately to ensure proper animation
+    // Ripple effect entrance animation
     masterTl
-      .to(ellipseWrapper, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.5,
-        immediateRender: true
-      }, index * 0.04)
-      .to(icons, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.5,
-        stagger: 0.04,
-        immediateRender: true
-      }, `>-0.3`); // Start slightly before the ellipse animation completes
+      .fromTo(ellipseWrapper, 
+        {
+          opacity: 0,
+          scale: 0.8,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out",
+          immediateRender: true
+        }, 
+        index * 0.15 // Increased stagger time for more pronounced ripple effect
+      )
+      .fromTo(icons,
+        {
+          opacity: 0,
+          scale: 0.8,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: "power2.out",
+          stagger: 0.05,
+          immediateRender: true
+        },
+        `<0.4` // Start slightly after the ellipse animation begins
+      );
   };
 
   useEffect(() => {
     if (!startAnimation) {
       const container = containerRef.current;
       if (container) {
-        // Set initial state for both ellipses and icons
+        // Set initial states
         gsap.set(container.querySelectorAll('.ellipse-wrapper'), {
           opacity: 0,
-          scale: 0.7,
+          scale: 0.8,
           rotation: 0,
           immediateRender: true
         });
         
         gsap.set(container.querySelectorAll('.icon-wrapper'), {
           opacity: 0,
-          scale: 0.7,
+          scale: 0.8,
           rotation: 0,
           transformOrigin: "center center",
           immediateRender: true
@@ -78,7 +93,7 @@ const Ellipses = ({ startAnimation }) => {
     if (!container) return;
 
     const masterTl = gsap.timeline({
-      defaults: { ease: "power2.out" }
+      defaults: { ease: "power3.out" }
     });
 
     gsap.killTweensOf(container.querySelectorAll('.ellipse-wrapper, .icon-wrapper'));

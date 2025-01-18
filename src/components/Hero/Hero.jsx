@@ -7,6 +7,15 @@ import { TextHoverEffect } from './text-hover-effect';
 const Hero = () => {
   const { isMobile } = useResponsive();
   const [textAnimationComplete, setTextAnimationComplete] = useState(false);
+  const [startEllipsesAnimation, setStartEllipsesAnimation] = useState(false);
+
+  const handleTextAnimationComplete = () => {
+    setTextAnimationComplete(true);
+    // Add a delay before starting ellipses animation
+    setTimeout(() => {
+      setStartEllipsesAnimation(true);
+    }, 500); // 500ms delay, adjust as needed
+  };
 
   return (
     <div className={`relative w-full ${isMobile ? 'min-h-fit py-64' : 'h-screen'}`}>
@@ -18,10 +27,13 @@ const Hero = () => {
           duration: 0.7,
           ease: [0.19, 1, 0.22, 1]
         }}
-        onAnimationComplete={() => setTextAnimationComplete(true)}
       >
-        <div className="w-[600px] h-[300px]">
-          <TextHoverEffect text={['Game', 'Cube']} duration={0.1} />
+        <div className="w-[900px] h-[500px]">
+          <TextHoverEffect 
+            text={['Game', 'Cube']} 
+            duration={0.1} 
+            onAnimationComplete={handleTextAnimationComplete}
+          />
         </div>
       </motion.div>
 
@@ -30,7 +42,7 @@ const Hero = () => {
         initial="initial"
         animate="animate"
       >
-        <Ellipses startAnimation={textAnimationComplete} />
+        <Ellipses startAnimation={startEllipsesAnimation} />
       </motion.div>
     </div>
   );

@@ -5,14 +5,15 @@ import { debounce } from 'lodash';
 
 export const TextHoverEffect = ({
   text,
-  duration
+  duration,
+  onAnimationComplete
 }) => {
   const svgRef = useRef(null);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
   const textLines = Array.isArray(text) ? text : [text];
-  const lineHeight = 60;
+  const lineHeight = 50;
   const totalHeight = lineHeight * textLines.length;
   const baseY = 50 - ((textLines.length - 1) * lineHeight) / 2;
 
@@ -84,14 +85,17 @@ export const TextHoverEffect = ({
               y={`${yPos}%`}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="font-[helvetica] font-bold text-7xl"
+              className="uppercase font-spektra text-[3.5rem] leading-[8rem]"
               style={{ 
                 paintOrder: 'stroke fill',
-                stroke: 'rgb(229 229 229)',
-                strokeWidth: '1px',
+                stroke: 'rgb(235, 228, 216)',
+                strokeWidth: '0.5px',
                 fill: 'transparent',
                 opacity: 0.7,
-                vectorEffect: 'non-scaling-stroke'
+                vectorEffect: 'non-scaling-stroke',
+                fontVariationSettings: '"ital" 0',
+                letterSpacing: '0.02em',
+                padding: '2vw 0'
               }}>
               {line}
             </text>
@@ -100,13 +104,16 @@ export const TextHoverEffect = ({
               y={`${yPos}%`}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="font-[helvetica] font-bold text-7xl"
+              className="uppercase font-spektra text-[3.5rem] leading-[8rem]"
               style={{ 
                 paintOrder: 'stroke fill',
-                stroke: 'rgb(229 229 229)',
-                strokeWidth: '1px',
+                stroke: 'rgb(235, 228, 216)',
+                strokeWidth: '0.5px',
                 fill: 'transparent',
-                vectorEffect: 'non-scaling-stroke'
+                vectorEffect: 'non-scaling-stroke',
+                fontVariationSettings: '"ital" 0',
+                letterSpacing: '0.02em',
+                padding: '2vw 0'
               }}
               initial={{ strokeDashoffset: 1000, strokeDasharray: 1000 }}
               animate={{
@@ -114,8 +121,13 @@ export const TextHoverEffect = ({
                 strokeDasharray: 1000,
               }}
               transition={{
-                duration: 4,
+                duration: 2,
                 ease: "easeInOut",
+              }}
+              onAnimationComplete={() => {
+                if (index === textLines.length - 1) {
+                  onAnimationComplete?.();
+                }
               }}>
               {line}
             </motion.text>
@@ -125,13 +137,16 @@ export const TextHoverEffect = ({
               textAnchor="middle"
               dominantBaseline="middle"
               mask="url(#textMask)"
-              className="font-[helvetica] font-bold text-7xl"
+              className="uppercase font-spektra text-[3.5rem] leading-[8rem]"
               style={{ 
                 paintOrder: 'stroke fill',
                 stroke: 'url(#textGradient)',
-                strokeWidth: '1px',
+                strokeWidth: '0.5px',
                 fill: 'transparent',
-                vectorEffect: 'non-scaling-stroke'
+                vectorEffect: 'non-scaling-stroke',
+                fontVariationSettings: '"ital" 0',
+                letterSpacing: '0.02em',
+                padding: '2vw 0'
               }}>
               {line}
             </text>
