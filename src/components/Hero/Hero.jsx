@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import EllipsesDesktop from './EllipsesDesktop';
 import EllipsesMobile from './EllipsesMobile';
 import { TextHoverEffect } from './text-hover-effect';
 
 const Hero = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [textAnimationComplete, setTextAnimationComplete] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -18,21 +20,32 @@ const Hero = () => {
 
   return (
     <div className={`relative w-full ${isMobile ? 'min-h-fit py-64' : 'h-screen'}`}>
-      <div 
-        className={`${isMobile ? 'relative' : 'absolute'} left-1/2 -translate-x-1/2 ${isMobile ? '' : '-translate-y-[15vh]'}`}
-        style={{ 
-          width: isMobile ? '100vw' : '130vw',
-          height: isMobile ? 'auto' : '130vh',
+      <motion.div 
+        className="absolute inset-0 flex items-center justify-center z-10"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.7,
+          ease: [0.19, 1, 0.22, 1]
         }}
+        onAnimationComplete={() => setTextAnimationComplete(true)}
       >
-        {isMobile ? <EllipsesMobile /> : <EllipsesDesktop />}
-      </div>
-      
-      <div className="absolute inset-0 flex items-center justify-center z-10">
         <div className="w-[600px] h-[300px]">
           <TextHoverEffect text={['Game', 'Cube']} duration={0.1} />
         </div>
-      </div>
+      </motion.div>
+
+      <motion.div 
+        className="absolute inset-0 flex items-center justify-center"
+        initial="initial"
+        animate="animate"
+      >
+        {isMobile ? (
+          <EllipsesMobile startAnimation={textAnimationComplete} />
+        ) : (
+          <EllipsesDesktop startAnimation={textAnimationComplete} />
+        )}
+      </motion.div>
     </div>
   );
 };

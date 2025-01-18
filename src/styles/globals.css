@@ -1,5 +1,4 @@
 .ellipse {
-  opacity: 0.8;
   mix-blend-mode: screen;
   pointer-events: none;
   filter: blur(2px);
@@ -8,6 +7,7 @@
 .icon-wrapper {
   will-change: transform;
   backface-visibility: hidden;
+  opacity: 0;
 }
 
 @layer base {
@@ -24,4 +24,8 @@
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.ellipse-wrapper {
+  opacity: 0;
 }

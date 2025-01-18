@@ -24,7 +24,7 @@ import icon13 from '../../assets/icons/cbe7c9ebb37062468d76cc51b5734a6429d59074-
 import icon14 from '../../assets/icons/dbde5604dfa254389c43acb85a97f03561b4210c-61x61.png';
 import icon15 from '../../assets/icons/de7ef99de23fcaf90b724af99a557ae849d573cf-61x61.png';
 
-const EllipsesDesktop = () => {
+const EllipsesDesktop = ({ startAnimation }) => {
   const containerRef = useRef(null);
   const ellipses = [
     { 
@@ -118,18 +118,52 @@ const EllipsesDesktop = () => {
   ];
 
   useEffect(() => {
+    if (!startAnimation) {
+      // Ensure everything is hidden initially
+      const container = containerRef.current;
+      if (container) {
+        gsap.set(container.querySelectorAll('.ellipse-wrapper'), {
+          opacity: 0,
+          scale: 0.7
+        });
+        gsap.set(container.querySelectorAll('.icon-wrapper'), {
+          opacity: 0,
+          scale: 0.9
+        });
+      }
+      return;
+    }
+    
     const container = containerRef.current;
     const ellipseElements = container.children;
     
+    const masterTl = gsap.timeline({
+      defaults: {
+        ease: "power2.out"
+      }
+    });
+
     ellipses.forEach((config, index) => {
       const ellipseWrapper = ellipseElements[index];
       const icons = Array.from(ellipseWrapper.querySelectorAll('.icon-wrapper'));
       
-      const tl = gsap.timeline({ repeat: -1 });
+      // Initial state
+      gsap.set(ellipseWrapper, {
+        opacity: 0,
+        scale: 0.7,
+        rotation: 0
+      });
       
-      tl.to(ellipseWrapper, {
+      gsap.set(icons, {
+        opacity: 0,
+        scale: 0.9
+      });
+
+      // Start rotation immediately
+      gsap.to(ellipseWrapper, {
         rotation: config.direction * 360,
         duration: config.duration,
+        repeat: -1,
         ease: "none"
       });
 
@@ -142,17 +176,42 @@ const EllipsesDesktop = () => {
           transformOrigin: "center center"
         });
       });
+
+      // Create timeline for fade and scale
+      const ellipseTl = gsap.timeline({
+        delay: index * 0.04
+      });
+
+      // Animate ellipse fade and scale together
+      ellipseTl.to(ellipseWrapper, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.5,
+        ease: "power2.out"
+      });
+
+      // Animate icons with same timing
+      icons.forEach((icon) => {
+        ellipseTl.to(icon, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          ease: "power2.out"
+        }, "<");
+      });
+
+      masterTl.add(ellipseTl, index * 0.04);
     });
 
-    return () => gsap.killTweensOf(container.children);
-  }, []);
+    return () => masterTl.kill();
+  }, [startAnimation]);
 
   return (
     <div ref={containerRef} className="absolute inset-0 flex items-center justify-center">
       {ellipses.map((ellipse, index) => (
         <div
           key={index}
-          className="absolute"
+          className="absolute ellipse-wrapper"
           style={{
             width: `${ellipse.size}px`,
             height: `${ellipse.size}px`,
