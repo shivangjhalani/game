@@ -1,98 +1,109 @@
 "use client";
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const transition = {
-  type: "spring",
-  mass: 0.5,
-  damping: 11.5,
-  stiffness: 100,
-  restDelta: 0.001,
-  restSpeed: 0.001,
+  type: "tween",
+  duration: 0.2
 };
 
 export const MenuItem = ({
   setActive,
   active,
   item,
-  children
+  children,
+  to
 }) => {
-  return (
-    <div onMouseEnter={() => setActive(item)} className="relative">
-      <motion.p
-        transition={{ duration: 0.3 }}
-        className="cursor-pointer text-white/70 hover:text-white 
-          transition-all duration-200 text-sm font-medium">
-        {item}
-      </motion.p>
-      {active !== null && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={transition}>
-          {active === item && (
-            <div className="absolute top-[calc(100%_+_1.2rem)] left-1/2 transform -translate-x-1/2 pt-4">
-              <motion.div
-                transition={transition}
-                layoutId="active"
-                className="bg-black/50 backdrop-blur-xl 
-                  rounded-2xl overflow-hidden 
-                  border border-white/[0.1]
-                  shadow-xl shadow-black/[0.05]">
-                <motion.div
-                  layout
-                  className="w-max h-full p-4">
-                  <div className="flex flex-col space-y-4 min-w-[200px]">
-                    <p className="text-sm text-white/50">
-                      {children.props.children[0].props.children}
-                    </p>
-                    <div className="flex flex-col space-y-2">
-                      {children.props.children[1].props.children}
-                    </div>
-                  </div>
-                </motion.div>
-              </motion.div>
-            </div>
-          )}
+  const isActive = active === item;
+  
+  // If "to" prop is provided, render a simple link
+  if (to) {
+    return (
+      <Link 
+        to={to}
+        className="relative py-2 px-3"
+      >
+        <motion.div className="relative z-10">
+          <p className="cursor-pointer text-sm font-medium whitespace-nowrap text-white/70 hover:text-white transition-colors duration-200">
+            {item}
+          </p>
+          <motion.div
+            className="absolute -bottom-1 left-0 right-0 h-0.5 bg-white"
+            initial={{ scaleX: 0 }}
+            whileHover={{ scaleX: 1 }}
+            transition={{ duration: 0.2 }}
+          />
         </motion.div>
-      )}
+      </Link>
+    );
+  }
+
+  // Otherwise render the original popup menu item
+  return (
+    <div 
+      onMouseEnter={() => setActive(item)} 
+      className="relative py-2 px-3"
+    >
+      <motion.div
+        className="relative z-10"
+        animate={{
+          color: isActive ? "rgb(255, 255, 255)" : "rgba(255, 255, 255, 0.7)",
+        }}
+        transition={{ type: "tween", duration: 0.2 }}
+      >
+        <p className="cursor-pointer text-sm font-medium whitespace-nowrap">
+          {item}
+        </p>
+        {isActive && (
+          <motion.div
+            className="absolute -bottom-1 left-0 right-0 h-0.5 bg-white"
+            layoutId="popup-underline"
+            transition={{ type: "tween", duration: 0.2 }}
+          />
+        )}
+      </motion.div>
+
+      <AnimatePresence>
+        {isActive && children && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ type: "tween", duration: 0.2 }}
+            className="absolute -left-1/2 top-full pt-4 transform -translate-x-1/2 mt-0.5 w-max"
+          >
+            <div className="bg-black/50 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/[0.1] shadow-xl shadow-black/[0.05]">
+              <div className="p-4">
+                {children}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
 export const Menu = ({
   setActive,
-  children
+  children,
+  activeItem
 }) => {
   return (
     <nav
       onMouseLeave={() => setActive(null)}
-      className="relative rounded-full 
-        bg-black/30 backdrop-blur-lg border border-white/[0.1]
-        shadow-lg shadow-black/[0.03] 
-        flex justify-center space-x-8 px-8 py-4
-        transition-all duration-300 ease-in-out
-        hover:bg-black/40 hover:border-white/[0.2]">
+      className="relative rounded-full bg-black/30 backdrop-blur-lg 
+               border border-white/[0.1] shadow-lg shadow-black/[0.03]
+               flex justify-center space-x-2 px-4 py-2
+               transition-colors duration-200
+               hover:bg-black/40 hover:border-white/[0.2]"
+    >
       {children}
     </nav>
   );
 };
 
-export const NavLink = ({ children, ...rest }) => {
-  return (
-    <Link
-      {...rest}
-      className="text-white/70 hover:text-white 
-        transition-colors duration-200 text-sm font-medium
-        relative after:absolute after:left-0 after:bottom-0 
-        after:h-[2px] after:w-0 after:bg-white/70
-        after:transition-all after:duration-300
-        hover:after:w-full">
-      {children}
-    </Link>
-  );
-};
 export const ProductItem = ({
   title,
   description,
@@ -126,8 +137,7 @@ export const HoveredLink = ({
   return (
     <Link
       {...rest}
-      className="text-white/70 hover:text-white
-        transition-colors duration-200 text-sm">
+      className="text-white/70 hover:text-white transition-colors duration-200 text-sm">
       {children}
     </Link>
   );
