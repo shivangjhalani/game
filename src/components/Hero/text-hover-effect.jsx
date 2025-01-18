@@ -12,7 +12,7 @@ export const TextHoverEffect = ({
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
   const textLines = Array.isArray(text) ? text : [text];
-  const lineHeight = 60; // Reduced line height
+  const lineHeight = 60;
   const totalHeight = lineHeight * textLines.length;
   const baseY = 50 - ((textLines.length - 1) * lineHeight) / 2;
 
@@ -74,7 +74,7 @@ export const TextHoverEffect = ({
           id="revealMask"
           cx="50%"
           cy="50%"
-          r="20%"
+          r="40%"
           animate={maskPosition}
           transition={{ duration: duration ?? 0, ease: "easeOut" }}>
           <stop offset="0%" stopColor="white" />
@@ -100,7 +100,7 @@ export const TextHoverEffect = ({
                 stroke: 'rgb(229 229 229)',
                 strokeWidth: '1px',
                 fill: 'transparent',
-                opacity: hovered ? 0.7 : 0,
+                opacity: 0.7,
                 vectorEffect: 'non-scaling-stroke'
               }}>
               {line}
