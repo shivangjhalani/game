@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useResponsive } from '@/hooks/useResponsive';
 import Ellipses from './Ellipses';
-import { TextHoverEffect } from './text-hover-effect';
+import { TextHoverEffect } from './TextHoverHeading';
 
 const Hero = () => {
   const { isMobile } = useResponsive();
@@ -28,11 +28,12 @@ const Hero = () => {
           ease: [0.19, 1, 0.22, 1]
         }}
       >
-        <div className="w-[900px] h-[500px]">
+        <div className="w-full md:w-[900px] h-[300px] md:h-[500px]">
           <TextHoverEffect 
             text={['Game', 'Cube']} 
             duration={0.1} 
             onAnimationComplete={handleTextAnimationComplete}
+            id="game-cube"
           />
         </div>
       </motion.div>

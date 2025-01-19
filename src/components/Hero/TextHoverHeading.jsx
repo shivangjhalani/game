@@ -2,20 +2,38 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { debounce } from 'lodash';
+import { useResponsive } from '@/hooks/useResponsive';
 
 export const TextHoverEffect = ({
   text,
   duration,
-  onAnimationComplete
+  onAnimationComplete,
+  id = "default"
 }) => {
+  const { isMobile } = useResponsive();
   const svgRef = useRef(null);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
   const textLines = Array.isArray(text) ? text : [text];
-  const lineHeight = 50;
+  const lineHeight = isMobile ? 35 : 50;
   const totalHeight = lineHeight * textLines.length;
   const baseY = 50 - ((textLines.length - 1) * lineHeight) / 2;
+
+  const textGradientId = `textGradient-${id}`;
+  const revealMaskId = `revealMask-${id}`;
+  const textMaskId = `textMask-${id}`;
+
+  const commonTextStyles = {
+    paintOrder: 'stroke fill',
+    stroke: 'rgb(235, 228, 216)',
+    strokeWidth: isMobile ? '0.25px' : '0.5px',
+    fill: 'transparent',
+    vectorEffect: 'non-scaling-stroke',
+    fontVariationSettings: '"ital" 0',
+    letterSpacing: isMobile ? '0.01em' : '0.02em',
+    padding: isMobile ? '1vw 0' : '2vw 0'
+  };
 
   const handleMouseMove = debounce((e) => {
     if (!svgRef.current) return;
@@ -30,10 +48,29 @@ export const TextHoverEffect = ({
       cx: `${cxPercentage}%`,
       cy: `${cyPercentage}%`,
     });
-  }, 16); // ~60fps
+  }, 16);
   
+  const handleTouch = debounce((e) => {
+    if (!svgRef.current) return;
+    const touch = e.touches[0];
+    const svgRect = svgRef.current.getBoundingClientRect();
+    const x = touch.clientX - svgRect.left;
+    const y = touch.clientY - svgRect.top;
+    
+    const cxPercentage = (x / svgRect.width) * 100;
+    const cyPercentage = (y / svgRect.height) * 100;
+    
+    setMaskPosition({
+      cx: `${cxPercentage}%`,
+      cy: `${cyPercentage}%`,
+    });
+  }, 16);
+
   useEffect(() => {
-    return () => handleMouseMove.cancel();
+    return () => {
+      handleMouseMove.cancel();
+      handleTouch.cancel();
+    };
   }, []);
 
   return (
@@ -44,11 +81,12 @@ export const TextHoverEffect = ({
       viewBox={`0 0 300 ${Math.max(100, totalHeight)}`}
       xmlns="http://www.w3.org/2000/svg"
       onMouseMove={handleMouseMove}
+      onTouchMove={handleTouch}
       style={{ touchAction: 'none' }}
       className="select-none">
       <defs>
         <radialGradient
-          id="textGradient"
+          id={textGradientId}
           cx="50%"
           cy="50%"
           r="50%"
@@ -62,17 +100,20 @@ export const TextHoverEffect = ({
         </radialGradient>
 
         <motion.radialGradient
-          id="revealMask"
+          id={revealMaskId}
           cx="50%"
           cy="50%"
-          r="20%"
+          r={isMobile ? "30%" : "20%"}
           animate={maskPosition}
-          transition={{ duration: duration ?? 0, ease: "easeOut" }}>
+          transition={{ 
+            duration: isMobile ? 0 : (duration ?? 0), 
+            ease: "easeOut" 
+          }}>
           <stop offset="0%" stopColor="white" />
-          <stop offset="100%" stopColor="black" />
+          <stop offset={isMobile ? "80%" : "100%"} stopColor="black" />
         </motion.radialGradient>
-        <mask id="textMask">
-          <rect x="0" y="0" width="100%" height="100%" fill="url(#revealMask)" />
+        <mask id={textMaskId}>
+          <rect x="0" y="0" width="100%" height="100%" fill={`url(#${revealMaskId})`} />
         </mask>
       </defs>
 
@@ -85,17 +126,12 @@ export const TextHoverEffect = ({
               y={`${yPos}%`}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="uppercase font-spektra text-[3.5rem] leading-[8rem]"
+              className={`uppercase font-spektra ${
+                isMobile ? 'text-[2rem]' : 'text-[3.5rem]'
+              } ${isMobile ? 'leading-[4rem]' : 'leading-[8rem]'}`}
               style={{ 
-                paintOrder: 'stroke fill',
-                stroke: 'rgb(235, 228, 216)',
-                strokeWidth: '0.5px',
-                fill: 'transparent',
+                ...commonTextStyles,
                 opacity: 0.7,
-                vectorEffect: 'non-scaling-stroke',
-                fontVariationSettings: '"ital" 0',
-                letterSpacing: '0.02em',
-                padding: '2vw 0'
               }}>
               {line}
             </text>
@@ -104,17 +140,10 @@ export const TextHoverEffect = ({
               y={`${yPos}%`}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="uppercase font-spektra text-[3.5rem] leading-[8rem]"
-              style={{ 
-                paintOrder: 'stroke fill',
-                stroke: 'rgb(235, 228, 216)',
-                strokeWidth: '0.5px',
-                fill: 'transparent',
-                vectorEffect: 'non-scaling-stroke',
-                fontVariationSettings: '"ital" 0',
-                letterSpacing: '0.02em',
-                padding: '2vw 0'
-              }}
+              className={`uppercase font-spektra ${
+                isMobile ? 'text-[2rem]' : 'text-[3.5rem]'
+              } ${isMobile ? 'leading-[4rem]' : 'leading-[8rem]'}`}
+              style={commonTextStyles}
               initial={{ strokeDashoffset: 1000, strokeDasharray: 1000 }}
               animate={{
                 strokeDashoffset: 0,
@@ -136,17 +165,13 @@ export const TextHoverEffect = ({
               y={`${yPos}%`}
               textAnchor="middle"
               dominantBaseline="middle"
-              mask="url(#textMask)"
-              className="uppercase font-spektra text-[3.5rem] leading-[8rem]"
+              mask={`url(#${textMaskId})`}
+              className={`uppercase font-spektra ${
+                isMobile ? 'text-[2rem]' : 'text-[3.5rem]'
+              } ${isMobile ? 'leading-[4rem]' : 'leading-[8rem]'}`}
               style={{ 
-                paintOrder: 'stroke fill',
-                stroke: 'url(#textGradient)',
-                strokeWidth: '0.5px',
-                fill: 'transparent',
-                vectorEffect: 'non-scaling-stroke',
-                fontVariationSettings: '"ital" 0',
-                letterSpacing: '0.02em',
-                padding: '2vw 0'
+                ...commonTextStyles,
+                stroke: `url(#${textGradientId})`,
               }}>
               {line}
             </text>
