@@ -14,6 +14,7 @@ export const TextHoverEffect = ({
   const svgRef = useRef(null);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   const textLines = Array.isArray(text) ? text : [text];
   const lineHeight = isMobile ? 35 : 50;
@@ -27,12 +28,14 @@ export const TextHoverEffect = ({
   const commonTextStyles = {
     paintOrder: 'stroke fill',
     stroke: 'rgb(235, 228, 216)',
-    strokeWidth: isMobile ? '0.25px' : '0.5px',
+    strokeWidth: isMobile ? '0.5px' : '0.75px',
     fill: 'transparent',
     vectorEffect: 'non-scaling-stroke',
     fontVariationSettings: '"ital" 0',
-    letterSpacing: isMobile ? '0.01em' : '0.02em',
-    padding: isMobile ? '1vw 0' : '2vw 0'
+    letterSpacing: isMobile ? '0.02em' : '0.03em',
+    padding: isMobile ? '1vw 0' : '2vw 0',
+    shapeRendering: 'geometricPrecision',
+    textRendering: 'geometricPrecision'
   };
 
   const handleMouseMove = debounce((e) => {
@@ -73,6 +76,16 @@ export const TextHoverEffect = ({
     };
   }, []);
 
+  useEffect(() => {
+    document.fonts.ready.then(() => {
+      setFontLoaded(true);
+    });
+  }, []);
+
+  if (!fontLoaded) {
+    return null; // Or a loading placeholder
+  }
+
   return (
     <svg
       ref={svgRef}
@@ -82,8 +95,13 @@ export const TextHoverEffect = ({
       xmlns="http://www.w3.org/2000/svg"
       onMouseMove={handleMouseMove}
       onTouchMove={handleTouch}
-      style={{ touchAction: 'none' }}
-      className="select-none">
+      style={{ 
+        touchAction: 'none',
+        shapeRendering: 'geometricPrecision'
+      }}
+      className="select-none"
+      preserveAspectRatio="xMidYMid meet"
+    >
       <defs>
         <radialGradient
           id={textGradientId}
@@ -127,8 +145,8 @@ export const TextHoverEffect = ({
               textAnchor="middle"
               dominantBaseline="middle"
               className={`uppercase font-spektra ${
-                isMobile ? 'text-[2rem]' : 'text-[3.5rem]'
-              } ${isMobile ? 'leading-[4rem]' : 'leading-[8rem]'}`}
+                isMobile ? 'text-[1.75rem]' : 'text-[3.5rem]'
+              } ${isMobile ? 'leading-[3.5rem]' : 'leading-[8rem]'}`}
               style={{ 
                 ...commonTextStyles,
                 opacity: 0.7,
@@ -141,8 +159,8 @@ export const TextHoverEffect = ({
               textAnchor="middle"
               dominantBaseline="middle"
               className={`uppercase font-spektra ${
-                isMobile ? 'text-[2rem]' : 'text-[3.5rem]'
-              } ${isMobile ? 'leading-[4rem]' : 'leading-[8rem]'}`}
+                isMobile ? 'text-[1.75rem]' : 'text-[3.5rem]'
+              } ${isMobile ? 'leading-[3.5rem]' : 'leading-[8rem]'}`}
               style={commonTextStyles}
               initial={{ strokeDashoffset: 1000, strokeDasharray: 1000 }}
               animate={{
@@ -167,8 +185,8 @@ export const TextHoverEffect = ({
               dominantBaseline="middle"
               mask={`url(#${textMaskId})`}
               className={`uppercase font-spektra ${
-                isMobile ? 'text-[2rem]' : 'text-[3.5rem]'
-              } ${isMobile ? 'leading-[4rem]' : 'leading-[8rem]'}`}
+                isMobile ? 'text-[1.75rem]' : 'text-[3.5rem]'
+              } ${isMobile ? 'leading-[3.5rem]' : 'leading-[8rem]'}`}
               style={{ 
                 ...commonTextStyles,
                 stroke: `url(#${textGradientId})`,

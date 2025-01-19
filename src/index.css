@@ -61,6 +61,12 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+  svg text {
+    text-rendering: geometricPrecision;
+    shape-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 @font-face {
