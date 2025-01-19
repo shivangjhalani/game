@@ -123,12 +123,13 @@ const Ellipses = ({ startAnimation }) => {
         return (
           <div
             key={index}
-            className="absolute ellipse-wrapper"
+            className="absolute -mt-7 ellipse-wrapper"
             style={{
               width: `${ellipse.size}px`,
               height: `${ellipse.size}px`,
               opacity: 0,
-              visibility: 'visible'
+              visibility: 'visible',
+              willChange: 'transform'
             }}
           >
             <img

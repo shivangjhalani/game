@@ -12,7 +12,6 @@ export const TextHoverEffect = ({
 }) => {
   const { isMobile } = useResponsive();
   const svgRef = useRef(null);
-  const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
   const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -145,7 +144,7 @@ export const TextHoverEffect = ({
               textAnchor="middle"
               dominantBaseline="middle"
               className={`uppercase font-spektra ${
-                isMobile ? 'text-[6rem]' : 'text-[3.5rem]'
+                isMobile ? 'text-[5rem]' : 'text-[3.5rem]'
               } ${isMobile ? 'leading-[4.5rem]' : 'leading-[8rem]'}`}
               style={{ 
                 ...commonTextStyles,
@@ -159,7 +158,7 @@ export const TextHoverEffect = ({
               textAnchor="middle"
               dominantBaseline="middle"
               className={`uppercase font-spektra ${
-                isMobile ? 'text-[6rem]' : 'text-[3.5rem]'
+                isMobile ? 'text-[5rem]' : 'text-[3.5rem]'
               } ${isMobile ? 'leading-[4.5rem]' : 'leading-[8rem]'}`}
               style={commonTextStyles}
               initial={{ strokeDashoffset: 1000, strokeDasharray: 1000 }}
@@ -185,7 +184,7 @@ export const TextHoverEffect = ({
               dominantBaseline="middle"
               mask={`url(#${textMaskId})`}
               className={`uppercase font-spektra ${
-                isMobile ? 'text-[6rem]' : 'text-[3.5rem]'
+                isMobile ? 'text-[5rem]' : 'text-[3.5rem]'
               } ${isMobile ? 'leading-[4.5rem]' : 'leading-[8rem]'}`}
               style={{ 
                 ...commonTextStyles,

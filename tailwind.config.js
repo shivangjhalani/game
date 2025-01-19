@@ -7,6 +7,7 @@ export default {
   theme: {
     extend: {
       animation: {
+        grid: "grid 15s linear infinite",
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -71,6 +72,10 @@ export default {
         'counter-rotate-reverse': {
           '0%': { transform: 'translate(-50%, -50%) rotate(-360deg)' },
           '100%': { transform: 'translate(-50%, -50%) rotate(0deg)' },
+        },
+        grid: {
+          "0%": { transform: "translateY(-50%)" },
+          "100%": { transform: "translateY(0)" },
         },
       },
       fontSize: {
