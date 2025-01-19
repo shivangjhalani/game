@@ -17,7 +17,7 @@ const Ellipses = ({ startAnimation }) => {
       duration: config.duration,
       repeat: -1,
       ease: "none",
-      immediateRender: true
+      immediateRender: false
     });
 
     icons.forEach(icon => {
@@ -27,7 +27,7 @@ const Ellipses = ({ startAnimation }) => {
         repeat: -1,
         ease: "none",
         transformOrigin: "center center",
-        immediateRender: true
+        immediateRender: false
       });
     });
 
@@ -42,7 +42,6 @@ const Ellipses = ({ startAnimation }) => {
           scale: 1,
           duration: 1.2,
           ease: "power3.out",
-          immediateRender: true
         }, 
         index * 0.15
       )
@@ -57,7 +56,6 @@ const Ellipses = ({ startAnimation }) => {
           duration: 0.8,
           ease: "power2.out",
           stagger: 0.05,
-          immediateRender: true
         },
         "<0.4"
       );

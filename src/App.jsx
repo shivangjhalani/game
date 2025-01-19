@@ -5,7 +5,7 @@ import Navbar from './components/Navbar/Navbar'
 import About from './pages/About'
 import Team from './pages/Team'
 import Events from './pages/Events'
-import TracingBeams from './components/TracingBeams/TracingBeams'
+import TracingBeam from './components/TracingBeams/TracingBeam'
 
 function App() {
   return (
@@ -20,10 +20,13 @@ function App() {
             <section className="relative z-20 -mt-32">
               <GradientSection />
             </section>
-            <TracingBeams />
-            <div className="h-[200vh]">
-              {/* Your next section content */}
+            <div className="relative">
+              <TracingBeam>
+                <div className="h-[150vh]">
+                </div>
+              </TracingBeam>
             </div>
+            <div className="h-[150vh]"></div>
           </main>
         } />
         <Route path="/about" element={<About />} />
