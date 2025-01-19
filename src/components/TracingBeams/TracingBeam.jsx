@@ -22,11 +22,11 @@ export default function TracingBeam({
     }
   }, []);
 
-  const y1 = useSpring(useTransform(scrollYProgress, [0, 0.8], [50, svgHeight]), {
+  const y1 = useSpring(useTransform(scrollYProgress, [0, 0.8], [50, svgHeight * 1.3]), {
     stiffness: 300,
     damping: 50,
   });
-  const y2 = useSpring(useTransform(scrollYProgress, [0, 1], [50, svgHeight - 100]), {
+  const y2 = useSpring(useTransform(scrollYProgress, [0, 1], [50, svgHeight]), {
     stiffness: 300,
     damping: 50,
   });

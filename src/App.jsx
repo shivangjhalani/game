@@ -6,8 +6,11 @@ import About from './pages/About'
 import Team from './pages/Team'
 import Events from './pages/Events'
 import TracingBeam from './components/TracingBeams/TracingBeam'
+import { useSmoothScroll } from './hooks/useSmoothScroll'
 
 function App() {
+  useSmoothScroll()
+  
   return (
     <main>
       <Navbar />
