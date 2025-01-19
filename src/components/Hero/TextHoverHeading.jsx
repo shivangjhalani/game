@@ -17,7 +17,7 @@ export const TextHoverEffect = ({
   const [fontLoaded, setFontLoaded] = useState(false);
 
   const textLines = Array.isArray(text) ? text : [text];
-  const lineHeight = isMobile ? 35 : 50;
+  const lineHeight = isMobile ? 70 : 50;
   const totalHeight = lineHeight * textLines.length;
   const baseY = 50 - ((textLines.length - 1) * lineHeight) / 2;
 
@@ -145,8 +145,8 @@ export const TextHoverEffect = ({
               textAnchor="middle"
               dominantBaseline="middle"
               className={`uppercase font-spektra ${
-                isMobile ? 'text-[1.75rem]' : 'text-[3.5rem]'
-              } ${isMobile ? 'leading-[3.5rem]' : 'leading-[8rem]'}`}
+                isMobile ? 'text-[6rem]' : 'text-[3.5rem]'
+              } ${isMobile ? 'leading-[4.5rem]' : 'leading-[8rem]'}`}
               style={{ 
                 ...commonTextStyles,
                 opacity: 0.7,
@@ -159,8 +159,8 @@ export const TextHoverEffect = ({
               textAnchor="middle"
               dominantBaseline="middle"
               className={`uppercase font-spektra ${
-                isMobile ? 'text-[1.75rem]' : 'text-[3.5rem]'
-              } ${isMobile ? 'leading-[3.5rem]' : 'leading-[8rem]'}`}
+                isMobile ? 'text-[6rem]' : 'text-[3.5rem]'
+              } ${isMobile ? 'leading-[4.5rem]' : 'leading-[8rem]'}`}
               style={commonTextStyles}
               initial={{ strokeDashoffset: 1000, strokeDasharray: 1000 }}
               animate={{
@@ -185,8 +185,8 @@ export const TextHoverEffect = ({
               dominantBaseline="middle"
               mask={`url(#${textMaskId})`}
               className={`uppercase font-spektra ${
-                isMobile ? 'text-[1.75rem]' : 'text-[3.5rem]'
-              } ${isMobile ? 'leading-[3.5rem]' : 'leading-[8rem]'}`}
+                isMobile ? 'text-[6rem]' : 'text-[3.5rem]'
+              } ${isMobile ? 'leading-[4.5rem]' : 'leading-[8rem]'}`}
               style={{ 
                 ...commonTextStyles,
                 stroke: `url(#${textGradientId})`,
