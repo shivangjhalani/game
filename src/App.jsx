@@ -3,7 +3,6 @@ import { lazy, Suspense } from 'react'
 import Navbar from './components/Navbar/Navbar'
 // import LoadingSpinner from './components/LoadingSpinner'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
-import { TextHoverEffect } from './components/Hero/TextHoverHeading'
 
 // Lazy load all major components
 const Hero = lazy(() => import('./components/Hero/Hero'))
@@ -12,7 +11,8 @@ const TracingBeam = lazy(() => import('./components/TracingBeams/TracingBeam'))
 const About = lazy(() => import('./pages/About'))
 const Team = lazy(() => import('./pages/Team'))
 const Events = lazy(() => import('./pages/Events'))
-const Ellipses = lazy(() => import('./components/Hero/Ellipses'))
+const FAQ = lazy(() => import('./components/FAQ/FAQ'))
+const DotBackground = lazy(() => import('./components/DotBackground/DotBg'))
 
 function App() {
   useSmoothScroll()
@@ -25,19 +25,25 @@ function App() {
         <Routes>
           <Route path="/" element={
             <main className="overflow-hidden">
-              <Suspense fallback={<TextHoverEffect />}>
+              <Suspense>
                 <section className="z-10">
                   <Hero />
                 </section>
                 <section className="relative z-20 -mt-32">
                   <GradientSection />
                 </section>
-                <div className="relative">
-                  <TracingBeam>
+                <section>
+                  <DotBackground>
+                    <div className="relative">
+                      <TracingBeam>
+                        <div className="h-[150vh]">
+                          <FAQ />
+                        </div>
+                      </TracingBeam>
+                    </div>
                     <div className="h-[150vh]" />
-                  </TracingBeam>
-                </div>
-                <div className="h-[150vh]" />
+                  </DotBackground>
+                </section>
               </Suspense>
             </main>
           } />
