@@ -72,7 +72,7 @@ function ExpandableCards({ maxCards, showFeaturedOnly = false }) {
                   opacity: 0,
                   transition: { duration: 0.05 },
                 }}
-                className="flex absolute top-4 right-4 lg:hidden items-center justify-center bg-neutral-900 border border-white/10 rounded-full h-8 w-8 hover:bg-neutral-800 transition-colors duration-200"
+                className="flex absolute top-4 right-4 lg:hidden items-center justify-center bg-black/30 backdrop-blur-xl border border-white/[0.2] rounded-full h-8 w-8 hover:bg-black/40 hover:border-white/30 transition-colors duration-200"
                 onClick={() => setActive(null)}
               >
                 <CloseIcon />
@@ -80,7 +80,7 @@ function ExpandableCards({ maxCards, showFeaturedOnly = false }) {
               <motion.div
                 layoutId={`card-${active.title}-${id}`}
                 ref={ref}
-                className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-neutral-900 border border-white/10 sm:rounded-3xl overflow-hidden"
+                className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-black/10 backdrop-blur-2xl border border-white/[0.1] sm:rounded-3xl overflow-hidden shadow-xl shadow-black/[0.05]"
               >
                 <motion.div layoutId={`image-${active.title}-${id}`}>
                   <Image
@@ -146,7 +146,7 @@ function ExpandableCards({ maxCards, showFeaturedOnly = false }) {
                 layoutId={`card-${card.title}-${id}`}
                 key={card.title}
                 onClick={() => setActive(card)}
-                className="p-4 flex flex-col hover:bg-neutral-800/50 rounded-xl cursor-pointer border border-white/10 transition-colors duration-200"
+                className="p-4 flex flex-col bg-black/10 backdrop-blur-2xl border border-white/[0.1] hover:bg-black/20 hover:border-white/20 rounded-xl cursor-pointer transition-colors duration-200 shadow-lg shadow-white/8"
               >
                 <div className="flex gap-4 flex-col w-full">
                   <motion.div layoutId={`image-${card.title}-${id}`}>
