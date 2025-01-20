@@ -38,10 +38,10 @@ const Navbar = () => {
           </div>
         </MenuItem>
 
-        <MenuItem setActive={handleMenuItemHover} active={active} item="Events">
+        <MenuItem setActive={handleMenuItemHover} active={active} item="More">
           <div className="flex flex-col space-y-4 min-w-[200px]">
-            <HoveredLink to="/events">All Events</HoveredLink>
-            <HoveredLink to="/calendar">Calendar</HoveredLink>
+            <HoveredLink to="/events">Events</HoveredLink>
+            <HoveredLink to="/showcase">Showcase</HoveredLink>
           </div>
         </MenuItem>
       </Menu>

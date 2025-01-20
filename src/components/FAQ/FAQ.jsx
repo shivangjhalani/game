@@ -15,7 +15,7 @@ const FaqsCard = (props) => {
 
     return (
         <div 
-            className="space-y-3 mt-5 overflow-hidden border-b border-white/10 transition-colors duration-300 hover:bg-white/[0.02]"
+            className="space-y-3 mt-5 overflow-hidden border-b border-white/10 transition-colors duration-300 hover:border-white/20 group"
             key={idx}
             onClick={handleOpenAnswer}
         >
@@ -23,11 +23,21 @@ const FaqsCard = (props) => {
                 {faqsList.q}
                 {
                     state ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-700 ml-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" 
+                            className="h-5 w-5 text-red-700 ml-2 flex-shrink-0 transition-all duration-300 group-hover:text-red-500" 
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                        >
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
                         </svg>
                     ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-700 ml-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" 
+                            className="h-5 w-5 text-red-700 ml-2 flex-shrink-0 transition-all duration-300 group-hover:text-red-500 group-hover:rotate-90" 
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                        >
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                         </svg>
                     )
@@ -76,7 +86,7 @@ export default () => {
     return (
         <section className="leading-relaxed max-w-screen-xl mt-12 mx-auto px-4 md:px-8">
             <div className="space-y-3 text-center">
-                <h1 className="text-3xl font-spektra text-white">
+                <h1 className="text-3xl font-spektra text-white text-center">
                     Frequently Asked Questions
                 </h1>
                 <p className="text-white/70 max-w-lg mx-auto text-lg">

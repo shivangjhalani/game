@@ -70,11 +70,6 @@ const BeamElement = ({ scrollYProgress, svgHeight, y1, y2, isRight = false }) =>
 
   return (
     <>
-      <motion.div
-        className={`${isRight ? 'ml-[-6px]' : 'ml-[27px]'} h-4 w-4 rounded-full border border-netural-200 flex items-center justify-center`}>
-        <motion.div
-          className="h-2 w-2 rounded-full bg-red-700" />
-      </motion.div>
       <svg
         viewBox={`0 0 20 ${svgHeight}`}
         width="20"

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const Image = ({ src, alt, className, ...props }) => {
+const Image = ({ src, alt, className, priority, ...props }) => {
   const [loading, setLoading] = useState(true)
   const [currentSrc, setCurrentSrc] = useState('')
 
@@ -18,7 +18,7 @@ const Image = ({ src, alt, className, ...props }) => {
       src={currentSrc}
       alt={alt}
       className={`${className} ${loading ? 'blur-sm' : 'blur-0'} transition-all duration-300`}
-      loading="lazy"
+      loading={priority ? "eager" : "lazy"}
       {...props}
     />
   )

@@ -11,9 +11,10 @@ const TracingBeam = lazy(() => import('./components/TracingBeams/TracingBeam'))
 const About = lazy(() => import('./pages/About'))
 const Team = lazy(() => import('./pages/Team'))
 const Events = lazy(() => import('./pages/Events'))
+const Showcase = lazy(() => import('./pages/Showcase'))
 const FAQ = lazy(() => import('./components/FAQ/FAQ'))
 const DotBackground = lazy(() => import('./components/DotBackground/DotBg'))
-
+const ExpandableCards = lazy(() => import('./components/ExpandableCards/ExpandableCards'))
 function App() {
   useSmoothScroll()
   
@@ -37,8 +38,13 @@ function App() {
                     <div className="relative">
                       <TracingBeam>
                         <div className="h-[150vh]">
-                          <FAQ />
-                        </div>
+                          <section className="py-14">
+                            <FAQ />
+                          </section>
+                          <section className="py-14">
+                            <ExpandableCards maxCards={2} showFeaturedOnly={true} />
+                          </section>
+                          </div>
                       </TracingBeam>
                     </div>
                     <div className="h-[150vh]" />
@@ -50,6 +56,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/team" element={<Team />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/showcase" element={<Showcase />} />
         </Routes>
       </Suspense>
     </main>

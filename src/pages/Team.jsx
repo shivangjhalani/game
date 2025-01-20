@@ -1,15 +1,23 @@
 import React from 'react';
-import { Container } from '../components/Container';
+import TeamSection from '../components/Team/TeamSection';
+import DotBackground from '../components/DotBackground/DotBg';
+import TracingBeam from '../components/TracingBeams/TracingBeam';
+import PageLayout from '../components/Layout/PageLayout';
 
 const Team = () => {
   return (
-    <Container className="pt-32">
-      <h1 className="text-4xl font-bold text-white">About Us</h1>
-      <p className="mt-4 text-gray-400">
-        This is the about page content.
-      </p>
-    </Container>
+    <PageLayout noDefaultPadding>
+      <DotBackground>
+        <div className="min-h-screen pt-16">
+          <TracingBeam>
+            <div className="px-4 md:px-8 pb-16">
+                <TeamSection/>
+            </div>
+          </TracingBeam>
+        </div>
+      </DotBackground>
+    </PageLayout>
   );
 };
 
-export default Team; 
+export default Team;
