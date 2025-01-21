@@ -4,6 +4,7 @@ import React, { useEffect, useId, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { useOutsideClick } from "@/hooks/useOutsideClick"
 import { Link } from "react-router-dom"
+import { debounce } from 'lodash'
 
 function ExpandableCards({ maxCards, showFeaturedOnly = false }) {
   const [active, setActive] = useState(null)
@@ -11,11 +12,11 @@ function ExpandableCards({ maxCards, showFeaturedOnly = false }) {
   const ref = useRef(null)
 
   useEffect(() => {
-    function onKeyDown(event) {
+    const debouncedKeyDown = debounce((event) => {
       if (event.key === "Escape") {
         setActive(false)
       }
-    }
+    }, 150)
 
     if (active && typeof active === "object") {
       document.body.style.overflow = "hidden"
@@ -23,8 +24,11 @@ function ExpandableCards({ maxCards, showFeaturedOnly = false }) {
       document.body.style.overflow = "auto"
     }
 
-    window.addEventListener("keydown", onKeyDown)
-    return () => window.removeEventListener("keydown", onKeyDown)
+    window.addEventListener("keydown", debouncedKeyDown)
+    return () => {
+      window.removeEventListener("keydown", debouncedKeyDown)
+      debouncedKeyDown.cancel()
+    }
   }, [active])
 
   useOutsideClick(ref, () => setActive(null))
@@ -56,6 +60,7 @@ function ExpandableCards({ maxCards, showFeaturedOnly = false }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
               className="fixed inset-0 bg-black/60 h-full w-full z-10"
             />
           )}
@@ -78,8 +83,14 @@ function ExpandableCards({ maxCards, showFeaturedOnly = false }) {
                 <CloseIcon />
               </motion.button>
               <motion.div
-                layoutId={`card-${active.title}-${id}`}
+                layoutId={`card-${active.title}`}
                 ref={ref}
+                initial={false}
+                transition={{
+                  type: "spring",
+                  stiffness: 350,
+                  damping: 30
+                }}
                 className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-black/10 backdrop-blur-2xl border border-white/[0.1] sm:rounded-3xl overflow-hidden shadow-xl shadow-black/[0.05]"
               >
                 <motion.div layoutId={`image-${active.title}-${id}`}>
@@ -142,38 +153,11 @@ function ExpandableCards({ maxCards, showFeaturedOnly = false }) {
         <div className="flex flex-col items-center">
           <ul className="w-full grid grid-cols-1 md:grid-cols-2 items-start gap-4 mb-8">
             {displayedCards.map((card) => (
-              <motion.div
-                layoutId={`card-${card.title}-${id}`}
+              <Card
                 key={card.title}
+                card={card}
                 onClick={() => setActive(card)}
-                className="p-4 flex flex-col bg-black/10 backdrop-blur-2xl border border-white/[0.1] hover:bg-black/20 hover:border-white/20 rounded-xl cursor-pointer transition-colors duration-200 shadow-lg shadow-white/8"
-              >
-                <div className="flex gap-4 flex-col w-full">
-                  <motion.div layoutId={`image-${card.title}-${id}`}>
-                    <Image
-                      width={100}
-                      height={100}
-                      src={card.src || "/placeholder.svg"}
-                      alt={card.title}
-                      className="h-60 w-full rounded-lg object-cover object-top"
-                    />
-                  </motion.div>
-                  <div className="flex justify-center items-center flex-col">
-                    <motion.h3
-                      layoutId={`title-${card.title}-${id}`}
-                      className="font-spektra text-xl text-white/90 tracking-wide text-center md:text-left"
-                    >
-                      {card.title}
-                    </motion.h3>
-                    <motion.p
-                      layoutId={`description-${card.description}-${id}`}
-                      className="text-white/70 text-center md:text-left text-base"
-                    >
-                      {card.description}
-                    </motion.p>
-                  </div>
-                </div>
-              </motion.div>
+              />
             ))}
           </ul>
 
@@ -190,6 +174,43 @@ function ExpandableCards({ maxCards, showFeaturedOnly = false }) {
     </div>
   )
 }
+
+const Card = React.memo(({ card, onClick }) => {
+  return (
+    <motion.div
+      layoutId={`card-${card.title}`}
+      initial={false}
+      onClick={onClick}
+      className="p-4 flex flex-col bg-black/10 backdrop-blur-2xl border border-white/[0.1] hover:bg-black/20 hover:border-white/20 rounded-xl cursor-pointer transition-colors duration-200 shadow-lg shadow-white/8"
+    >
+      <div className="flex gap-4 flex-col w-full">
+        <motion.div layoutId={`image-${card.title}`}>
+          <Image
+            width={100}
+            height={100}
+            src={card.src || "/placeholder.svg"}
+            alt={card.title}
+            className="h-60 w-full rounded-lg object-cover object-top"
+          />
+        </motion.div>
+        <div className="flex justify-center items-center flex-col">
+          <motion.h3
+            layoutId={`title-${card.title}`}
+            className="font-spektra text-xl text-white/90 tracking-wide text-center md:text-left"
+          >
+            {card.title}
+          </motion.h3>
+          <motion.p
+            layoutId={`description-${card.description}`}
+            className="text-white/70 text-center md:text-left text-base"
+          >
+            {card.description}
+          </motion.p>
+        </div>
+      </div>
+    </motion.div>
+  )
+})
 
 const CloseIcon = () => {
   return (
