@@ -29,8 +29,6 @@ function App() {
               <Suspense>
                 <section className="z-10">
                   <Hero />
-                </section>
-                <section className="relative z-20 -mt-32 px-6 md:px-8">
                   <GradientSection />
                 </section>
                 <section>
