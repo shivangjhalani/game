@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react'
 import Navbar from './components/Navbar/NewNavbar'
 // import LoadingSpinner from './components/LoadingSpinner'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
+import ScrollToTop from './components/ScrollToTop'
 
 // Lazy load all major components
 const Hero = lazy(() => import('./components/Hero/Hero'))
@@ -20,6 +21,7 @@ function App() {
   
   return (
     <main>
+      <ScrollToTop />
       <Navbar/>
       {/* <Suspense fallback={<TextHoverEffect />}> */}
       <Suspense>
@@ -27,7 +29,7 @@ function App() {
           <Route path="/" element={
             <main className="overflow-hidden">
               <Suspense>
-                <section className="z-10">
+                <section className="z-10 mt-16 md:mt-10">
                   <Hero />
                   <GradientSection />
                 </section>

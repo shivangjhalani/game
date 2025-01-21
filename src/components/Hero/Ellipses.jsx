@@ -102,15 +102,18 @@ const Ellipses = ({ startAnimation }) => {
     };
   }, [startAnimation, ellipses]);
 
-  const calculateIconPosition = (angle, radius, iconSize) => {
+  const calculateIconPosition = (angle, radius, iconSize, isMobile) => {
     const angleInRadians = (angle * Math.PI) / 180;
     const x = radius * Math.cos(angleInRadians);
     const y = radius * Math.sin(angleInRadians);
     const offset = iconSize / 2;
-
+    
+    // Add slight adjustments for mobile
+    const mobileRadiusAdjustment = isMobile ? 0.92 : 1; // Slightly reduce radius on mobile
+    
     return {
-      x: x - offset,
-      y: y - offset
+      x: (x * mobileRadiusAdjustment) - offset,
+      y: (y * mobileRadiusAdjustment) - offset
     };
   };
 
@@ -139,8 +142,8 @@ const Ellipses = ({ startAnimation }) => {
             />
             
             {ellipse.icons.map((icon, iconIndex) => {
-              const { x, y } = calculateIconPosition(icon.angle, radius, iconSize);
-
+              const { x, y } = calculateIconPosition(icon.angle, radius, iconSize, isMobile);
+              
               return (
                 <div
                   key={iconIndex}
@@ -155,14 +158,25 @@ const Ellipses = ({ startAnimation }) => {
                     opacity: 0,
                     visibility: 'visible',
                     zIndex: 10,
-                    willChange: 'transform, opacity'
+                    willChange: 'transform, opacity',
+                    ...(isMobile && {
+                      filter: 'none',
+                      backfaceVisibility: 'hidden',
+                      perspective: '1000px'
+                    })
                   }}
                 >
                   <img
                     src={icon.src}
                     alt={`Icon ${iconIndex + 1}`}
                     className="w-full h-full"
-                    style={{ pointerEvents: 'none' }}
+                    style={{ 
+                      pointerEvents: 'none',
+                      ...(isMobile && {
+                        transform: 'translateZ(0)',
+                        imageRendering: 'crisp-edges'
+                      })
+                    }}
                   />
                 </div>
               );
