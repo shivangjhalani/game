@@ -92,33 +92,18 @@ export const MenuItem = ({
 
 export const Menu = ({
   setActive,
-  children,
-  leftLogo,
-  rightLogo
+  children
 }) => {
   return (
     <nav
       onMouseLeave={() => setActive(null)}
-      className="relative flex items-center justify-between w-full max-w-6xl"
+      className="relative rounded-full bg-black/30 backdrop-blur-xl 
+                 border border-white/[0.2] shadow-lg shadow-white/8
+                 flex justify-center space-x-2 px-4 py-2
+                 transition-colors duration-200
+                 hover:bg-black/40 hover:border-white/30"
     >
-      {/* Left Logo */}
-      <div className="w-12 h-12 flex items-center justify-center">
-        {leftLogo}
-      </div>
-
-      {/* Menu Items */}
-      <div className="rounded-full bg-black/30 backdrop-blur-xl 
-                    border border-white/[0.2] shadow-lg shadow-white/8
-                    flex justify-center space-x-2 px-4 py-2
-                    transition-colors duration-200
-                    hover:bg-black/40 hover:border-white/30">
-        {children}
-      </div>
-
-      {/* Right Logo */}
-      <div className="w-12 h-12 flex items-center justify-center">
-        {rightLogo}
-      </div>
+      {children}
     </nav>
   );
 };

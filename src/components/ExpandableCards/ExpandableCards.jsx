@@ -140,7 +140,7 @@ function ExpandableCards({ maxCards, showFeaturedOnly = false }) {
           ) : null}
         </AnimatePresence>
         <div className="flex flex-col items-center">
-          <ul className="max-w-2xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 items-start gap-4 mb-8">
+          <ul className="w-full grid grid-cols-1 md:grid-cols-2 items-start gap-4 mb-8">
             {displayedCards.map((card) => (
               <motion.div
                 layoutId={`card-${card.title}-${id}`}

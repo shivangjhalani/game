@@ -30,24 +30,24 @@ function App() {
                 <section className="z-10">
                   <Hero />
                 </section>
-                <section className="relative z-20 -mt-32">
+                <section className="relative z-20 -mt-32 px-6 md:px-8">
                   <GradientSection />
                 </section>
                 <section>
                   <DotBackground>
+                  <TracingBeam>
                     <div className="relative">
-                      <TracingBeam>
-                        <div className="h-[150vh]">
-                          <section className="py-14">
-                            <FAQ />
-                          </section>
-                          <section className="py-14">
-                            <ExpandableCards maxCards={2} showFeaturedOnly={true} />
-                          </section>
-                          </div>
-                      </TracingBeam>
-                    </div>
+                          <div className="h-[150vh]">
+                            <section className="py-14 px-6 md:px-8">
+                              <FAQ />
+                            </section>
+                            <section className="py-14 px-6 md:px-8">
+                              <ExpandableCards maxCards={2} showFeaturedOnly={true} />
+                            </section>
+                            </div>
+                      </div>
                     <div className="h-[150vh]" />
+                    </TracingBeam>
                   </DotBackground>
                 </section>
               </Suspense>
