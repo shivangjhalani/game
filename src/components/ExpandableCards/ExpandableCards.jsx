@@ -72,7 +72,7 @@ function ExpandableCards({ maxCards, showFeaturedOnly = false }) {
                   opacity: 0,
                   transition: { duration: 0.05 },
                 }}
-                className="flex absolute top-4 right-4 lg:hidden items-center justify-center bg-black/30 backdrop-blur-xl border border-white/[0.2] rounded-full h-8 w-8 hover:bg-black/40 hover:border-white/30 transition-colors duration-200"
+                className="flex absolute top-4 right-4 lg:hidden items-center justify-center bg-black/30 backdrop-blur-xl border border-white/[0.2] rounded-full h-8 w-8 hover:bg-black/40 hover:border-white/30 transition-colors duration-200 z-[110]"
                 onClick={() => setActive(null)}
               >
                 <CloseIcon />

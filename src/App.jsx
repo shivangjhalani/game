@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
-import Navbar from './components/Navbar/Navbar'
+import Navbar from './components/Navbar/NewNavbar'
 // import LoadingSpinner from './components/LoadingSpinner'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 
@@ -20,7 +20,7 @@ function App() {
   
   return (
     <main>
-      <Navbar />
+      <Navbar/>
       {/* <Suspense fallback={<TextHoverEffect />}> */}
       <Suspense>
         <Routes>

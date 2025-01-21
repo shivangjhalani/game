@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { Menu, MenuItem, HoveredLink } from './NavbarHelper';
+import { Menu, MenuItem, HoveredLink } from './NewNavbarHelper';
 
 const Navbar = () => {
   const [active, setActive] = useState(null);
@@ -21,7 +21,24 @@ const Navbar = () => {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center p-4">
-      <Menu setActive={handleMenuItemHover} activeItem={active}>
+      <Menu 
+        setActive={handleMenuItemHover} 
+        activeItem={active}
+        leftLogo={
+          <img 
+            src="/path-to-your-left-logo.png" 
+            alt="Left Logo"
+            className="w-10 h-10 object-contain" 
+          />
+        }
+        rightLogo={
+          <img 
+            src="/path-to-your-right-logo.png" 
+            alt="Right Logo"
+            className="w-10 h-10 object-contain" 
+          />
+        }
+      >
         <MenuItem to="/" item="Home" />
 
         <MenuItem setActive={handleMenuItemHover} active={active} item="About">
